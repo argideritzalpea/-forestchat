@@ -122,6 +122,13 @@
 - [six](number) visits
 - [6](number)
 
+## intent:ask_InfoSource
+- I found out about it [online](source)
+- [WTA website](source)
+- the [internet](source)
+- [a friend](source) told me about this trail!
+- a [magazine article](source)
+
 ## intent:ask_ZipCode
 - [59723](number)
 - I'm from the [34673](number)
@@ -132,10 +139,3 @@
 - [1993](year)
 - I was born a long time ago... ['62](year)
 - [1950](year)
-
-## intent:ask_InfoSource
-- I found out about it online
-- WTA website
-- the internet
-- a friend told me about this trail!
-- a magazine article

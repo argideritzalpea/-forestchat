@@ -4,10 +4,12 @@ entities:
   - number
   - timeAbs
   - timeAgo
-  - infoSource
+  - source
   - year
 
 intents:
+  - affirm
+  - deny
   - Hello
   - Goodbye
   - ask_CountTime
@@ -139,6 +141,8 @@ actions:
   - action_store_InfoSource
   - action_store_YearBorn
   - action_store_ZipCode
+  - action_default_fallback
+  - action_default_ask_affirmation
 
 
 forms:

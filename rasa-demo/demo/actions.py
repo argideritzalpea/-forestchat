@@ -95,6 +95,23 @@ class ActionStoreCountTime(Action):
         else:
             return []
 
+
+class ActionStoreInfoSource(Action):
+    """Stores time at which count was conducted in a slot"""
+
+    def name(self):
+        return "action_store_InfoSource"
+
+    def run(self, dispatcher, tracker, domain):
+
+        infoSource = next(tracker.get_latest_entity_values('text'), None)
+
+        if countTime:
+            return [SlotSet('source', infoSource)]
+        else:
+            return []
+
+
 class ActionStoreReturnStatus(Action):
     """Stores whether returning or leaving in a slot"""
 
@@ -156,3 +173,83 @@ class ActionStoreZipCode(Action):
             return [SlotSet('zipCode', zipCode)]
         else:
             return []
+
+
+class ActionDefaultFallback(Action):
+
+    def name(self) -> Text:
+        return "action_default_fallback"
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]
+            ) -> List['Event']:
+
+        # Fallback caused by TwoStageFallbackPolicy
+        if (len(tracker.events) >= 4 and
+                tracker.events[-4].get('name') ==
+                'action_default_ask_affirmation'):
+
+            return [SlotSet('feedback_value', 'negative'),
+                    Form('feedback_form'),
+                    FollowupAction('feedback_form')]
+
+        # Fallback caused by Core
+        else:
+            dispatcher.utter_template('utter_default', tracker)
+            return [UserUtteranceReverted()]
+
+
+class ActionDefaultAskAffirmation(Action):
+    """Asks for an affirmation of the intent if NLU threshold is not met."""
+
+    def name(self) -> Text:
+        return "action_default_ask_affirmation"
+
+    def __init__(self) -> None:
+        import csv
+
+        self.intent_mappings = {}
+        with open('data/intent_description_mapping.csv',
+                  newline='',
+                  encoding='utf-8') as file:
+            csv_reader = csv.reader(file)
+            for row in csv_reader:
+                self.intent_mappings[row[0]] = row[1]
+
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]
+            ) -> List['Event']:
+
+        intent_ranking = tracker.latest_message.get('intent_ranking', [])
+        if len(intent_ranking) > 1:
+            diff_intent_confidence = (intent_ranking[0].get("confidence") -
+                                      intent_ranking[1].get("confidence"))
+            if diff_intent_confidence < 0.2:
+                intent_ranking = intent_ranking[:2]
+            else:
+                intent_ranking = intent_ranking[:1]
+        first_intent_names = [intent.get('name', '')
+                              for intent in intent_ranking
+                              if intent.get('name', '') != 'out_of_scope']
+
+        message_title = "Sorry, I'm not sure I've understood " \
+                        "you correctly 🤔 Do you mean..."
+
+        mapped_intents = [(name, self.intent_mappings.get(name, name))
+                          for name in first_intent_names]
+
+        buttons = []
+        for intent in mapped_intents:
+            buttons.append({'title': intent[1],
+                            'payload': '/{}'.format(intent[0])})
+
+        buttons.append({'title': 'Something else',
+                        'payload': '/out_of_scope'})
+
+        dispatcher.utter_button_message(message_title, buttons=buttons)
+
+        return []

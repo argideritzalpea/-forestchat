@@ -23,7 +23,7 @@ train-core:
 
 run-cmdline:
 	make run-actions&
-	python -m rasa_core.run -d models/dialogue -u models/nlu/current --debug
+	python -m rasa_core.run -d models/dialogue -u models/nlu/current
 
 visualize:
 	python -m rasa_core.visualize -s data/core/ -d domain.yml -o story_graph.png

@@ -5,6 +5,8 @@ pipeline:
   OOV_token: oov
   token_pattern: (?u)\b\w+\b
 - name: intent_classifier_tensorflow_embedding
+  intent_tokenization_flag: true
+  intent_split_symbol: +
   epochs: 50
 - name: ner_duckling_http
   url: http://localhost:8000
