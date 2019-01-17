@@ -1,0 +1,7 @@
+nlu_config = """
+language: en
+pipeline: tensorflow_embedding
+"""
+%store nlu_config > nlu_config.yml
+
+print("The configuration has been successfully stored inside the nlu_config.yml file. You can now move on to the next step!")

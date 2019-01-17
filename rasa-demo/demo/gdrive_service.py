@@ -14,10 +14,10 @@ class GDriveService(object):
     """Service to write to a spread sheet in google drive."""
 
     # Name of the spreadsheet
-    SPREADSHEET_NAME = "Qualify Inbounds"
+    SPREADSHEET_NAME = "RasaData"
 
     # Sheet where the new address change entries should be stored in
-    SHEET_NAME = "demobot"
+    SHEET_NAME = "Sheet1"
 
     def __init__(self, gdrive_credentials_json=config.gdrive_credentials):
         scopes = ['https://spreadsheets.google.com/feeds',

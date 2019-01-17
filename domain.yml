@@ -2,22 +2,19 @@
 entities:
   - returnStatus
   - number
-  - timeAbs
-  - timeAgo
+  - time
   - infoSource
   - year
 
 intents:
   - Hello
   - Goodbye
+  - Evaluation
   - ask_CountTime
-  - ask_PeopleCount
-  - ask_VehicleCount
+  - ask_PartyPeople
+  - ask_PartyVehicles
   - ask_ReturnStatus
   - ask_TrailVisits
-  - ask_InfoSource
-  - ask_ZipCode
-  - ask_YearBorn
 
 slots:
   countTime:
@@ -27,9 +24,7 @@ slots:
     values:
       - returning
       - leaving
-  peopleCount:
-    type: float
-  vehicleCount:
+  vehicleCnt:
     type: float
   trailVisits:
     type: float
@@ -98,9 +93,9 @@ slots:
 templates:
   utter_ask_CountTime:
     - text: "What time did you count vehicles?"
-  utter_ask_PeopleCount:
+  utter_ask_PartyPeople:
     - text: "How many people (adults and children) are in your party today?"
-  utter_ask_VehicleCount:
+  utter_ask_PartyVehicles:
     - text: "How many vehicles did your party bring to the trailhead today?"
   utter_ask_ReturnStatus:
     - text: "Are you leaving for your hike, or are you returning from your hike?"
@@ -108,10 +103,6 @@ templates:
     - text: "How many times have you visited this trail in the last 12 months (including today)?"
   utter_ask_InfoSource:
     - text: "How did you get information about this trail site?"
-  utter_ask_YearBorn:
-    - text: "In what year were you born?"
-  utter_ask_ZipCode:
-    - text: "What is your zip code?"
   utter_Hello:
     - text: "Thank you! If you're willing to contribute additional information to our study, we have a few survey questions. The first question is:"
   utter_Goodbye:
@@ -124,22 +115,12 @@ actions:
   - utter_Goodbye
   - utter_Evaluation
   - utter_ask_CountTime
-  - utter_ask_PeopleCount
-  - utter_ask_VehicleCount
+  - utter_ask_PartyPeople
+  - utter_ask_PartyVehicles
   - utter_ask_ReturnStatus
   - utter_ask_TrailVisits
   - utter_ask_InfoSource
-  - utter_ask_YearBorn
-  - utter_ask_ZipCode
-  - action_store_CountTime
-  - action_store_ReturnStatus
-  - action_store_VehicleCount
-  - action_store_PeopleCount
-  - action_store_TrailVisits
-  - action_store_InfoSource
-  - action_store_YearBorn
-  - action_store_ZipCode
-
+  - action_Store
 
 forms:
   - count_episode
